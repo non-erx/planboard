@@ -1,19 +1,14 @@
 services:
-  backend:
-    build: ./backend
+  planboard:
+    build: .
+    image: nonerx/planboard:latest
     restart: unless-stopped
+    ports:
+      - "80:80"
     volumes:
       - db-data:/app/data
     environment:
       - DATABASE_URL=sqlite:////app/data/planboard.db
-
-  frontend:
-    build: ./frontend
-    restart: unless-stopped
-    ports:
-      - "80:3000"
-    depends_on:
-      - backend
 
 volumes:
   db-data:
