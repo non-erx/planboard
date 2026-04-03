@@ -1,46 +1,36 @@
-# Plan Me: Your Path to Productivity!
-## Description
+# PlanBoard
 
-Make Plan Me your go-to todo app, expertly designed for effortless daily planning.  
+A shareable todo board app. No login required — create a board, get a unique link, and share it with anyone.
 
-Plan Me was developed using React, TypeScript and SCSS,  
+Forked and refactored from [Plan-Me](https://github.com/ivaZaiets/Plan-Me) by [@ivaZaiets](https://github.com/ivaZaiets).
 
-it offers a dynamic and easy-to-use interface.
+## Stack
 
-#### How can you use Plan Me?
+- **Frontend:** React 19, Vite, TypeScript, Tailwind CSS
+- **Backend:** Python, Flask, SQLAlchemy, SQLite
+- **Packaging:** Docker Compose
 
-* `Sign in` or `log in`
+## Quick Start
 
-* `Manage`, `delete`, `update` or `rename`  
+```bash
+docker compose up --build
+```
 
- the status of your daily tasks
+Open [http://localhost:3000](http://localhost:3000).
 
-* Sort tasks: `all`, `active` or `completed`
+## Development
 
-* Easily `remove` all of tasks with a single click
+### Backend
 
-* `Switch` the status of your tasks
-  
-## Overview
+```bash
+cd backend
+uv run python app.py
+```
 
-https://github.com/ivaZaiets/Plan-Me/assets/142230575/d1c13c22-6721-4703-9a5d-eb8afa9811ee
+### Frontend
 
-## Links
-
-[DEMO](https://ivazaiets.github.io/Plan-Me/)  
-[SOLUTION](https://github.com/ivaZaiets/Plan-Me)
-
-## Built with
-
-* `REST api`
-* `React`
-* `TypeScript`
-* `Bulma`
-
-## Project Highlights
-Project relies on `Node.js v14`. Execute `$ nvm use 14`
-
-## Author
-[GitHub](https://github.com/ivaZaiets)   
-[Telegram](https://t.me/swugre)  
-[LinkedIn](https://www.linkedin.com/in/ivanna-zaiets-6122532a0/)
+```bash
+cd frontend
+npm install
+npm run dev
+```
