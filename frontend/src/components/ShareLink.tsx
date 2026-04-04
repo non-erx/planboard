@@ -29,15 +29,15 @@ export function ShareLink({ boardId }: Props) {
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <div className="flex items-center gap-2 px-2.5 py-1.5 bg-muted border border-border rounded-lg text-xs text-muted-foreground min-w-0 overflow-hidden">
+    <div className="flex items-center gap-2 min-w-0">
+      <div className="hidden sm:flex items-center gap-2 px-2.5 py-1.5 bg-muted border border-border rounded-lg text-xs text-muted-foreground min-w-0 overflow-hidden">
         <Link2 className="w-3.5 h-3.5 flex-shrink-0" />
         <span className="truncate font-mono">{url}</span>
       </div>
       <button
         onClick={copy}
         className={cn(
-          'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all',
+          'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex-shrink-0',
           copied
             ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
             : 'bg-secondary text-foreground border border-border hover:bg-accent'
@@ -50,8 +50,10 @@ export function ShareLink({ boardId }: Props) {
           </>
         ) : (
           <>
-            <Copy className="w-3.5 h-3.5" />
-            Copy link
+            <Link2 className="w-3.5 h-3.5 sm:hidden" />
+            <Copy className="w-3.5 h-3.5 hidden sm:block" />
+            <span className="sm:hidden">Share</span>
+            <span className="hidden sm:inline">Copy link</span>
           </>
         )}
       </button>
