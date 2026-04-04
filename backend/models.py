@@ -64,7 +64,7 @@ class Todo(db.Model):
     )
     title = db.Column(db.String(500), nullable=False)
     completed = db.Column(db.Boolean, default=False, nullable=False)
-    sort_order = db.Column(db.Integer, nullable=False, default=0)
+    sort_order = db.Column(db.Integer, nullable=False, default=0, server_default="0")
     created_at = db.Column(
         db.DateTime, default=lambda: datetime.now(timezone.utc)
     )

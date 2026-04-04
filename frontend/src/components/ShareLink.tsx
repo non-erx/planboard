@@ -30,7 +30,7 @@ export function ShareLink({ boardId }: Props) {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="flex items-center gap-2 px-3 py-1.5 bg-muted border border-border rounded-lg text-xs text-muted-foreground max-w-[280px]">
+      <div className="flex items-center gap-2 px-2.5 py-1.5 bg-muted border border-border rounded-lg text-xs text-muted-foreground min-w-0 overflow-hidden">
         <Link2 className="w-3.5 h-3.5 flex-shrink-0" />
         <span className="truncate font-mono">{url}</span>
       </div>

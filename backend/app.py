@@ -12,6 +12,15 @@ def create_app():
 
     with app.app_context():
         db.create_all()
+        try:
+            with db.engine.connect() as conn:
+                result = conn.execute(db.text("PRAGMA table_info(todos)"))
+                columns = [row[1] for row in result]
+                if columns and "sort_order" not in columns:
+                    conn.execute(db.text("ALTER TABLE todos ADD COLUMN sort_order INTEGER NOT NULL DEFAULT 0"))
+                    conn.commit()
+        except Exception:
+            pass
 
     @app.post("/api/boards")
     def create_board():

@@ -160,7 +160,6 @@
   background: var(--scrollbar-thumb-hover);
 }
 
-/* Prevent overscroll during drag on mobile */
 .dragging-active {
   overflow: hidden;
   touch-action: none;

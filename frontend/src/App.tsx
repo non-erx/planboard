@@ -18,7 +18,7 @@ function BoardInner({ boardId }: Props) {
   return (
     <div className="min-h-screen bg-background flex flex-col transition-colors duration-200">
       <nav className="border-b border-border">
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-center gap-3">
+        <div className="max-w-2xl mx-auto px-3 py-2 flex items-center justify-center gap-2">
           <ThemeSwitcher />
           {!isLoading && <ShareLink boardId={boardId} />}
         </div>

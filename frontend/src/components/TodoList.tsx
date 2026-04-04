@@ -30,7 +30,6 @@ export function TodoList() {
     reorderTodos(items.map((t) => t.id));
   }, [filteredTodos, reorderTodos]);
 
-  // Mouse drag
   const handleDragStart = (idx: number) => (e: React.DragEvent) => {
     if (!canDrag) return;
     e.dataTransfer.effectAllowed = 'move';
@@ -53,7 +52,6 @@ export function TodoList() {
     draggingId.current = null;
   };
 
-  // Touch drag
   const getIndexFromY = (y: number): number => {
     if (!containerRef.current) return 0;
     const children = Array.from(containerRef.current.children) as HTMLElement[];
