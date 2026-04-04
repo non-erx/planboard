@@ -10,6 +10,7 @@ export interface Todo {
   boardId: string;
   title: string;
   completed: boolean;
+  sort_order: number;
   created_at: string;
   tags: Tag[];
 }

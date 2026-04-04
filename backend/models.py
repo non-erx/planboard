@@ -64,6 +64,7 @@ class Todo(db.Model):
     )
     title = db.Column(db.String(500), nullable=False)
     completed = db.Column(db.Boolean, default=False, nullable=False)
+    sort_order = db.Column(db.Integer, nullable=False, default=0)
     created_at = db.Column(
         db.DateTime, default=lambda: datetime.now(timezone.utc)
     )
@@ -76,6 +77,7 @@ class Todo(db.Model):
             "boardId": self.board_id,
             "title": self.title,
             "completed": self.completed,
+            "sort_order": self.sort_order,
             "created_at": self.created_at.isoformat(),
             "tags": [t.to_dict() for t in self.tags],
         }

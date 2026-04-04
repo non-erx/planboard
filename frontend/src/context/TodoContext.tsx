@@ -34,6 +34,7 @@ interface TodoContextType {
   deleteTag: (tagId: number) => Promise<void>;
   addTagToTodo: (todoId: number, tagId: number) => Promise<void>;
   removeTagFromTodo: (todoId: number, tagId: number) => Promise<void>;
+  reorderTodos: (orderedIds: number[]) => Promise<void>;
 }
 
 const TodoContext = createContext<TodoContextType | null>(null);
@@ -221,6 +222,19 @@ export function TodoProvider({ boardId, children }: Props) {
     }
   }, [boardId, showError]);
 
+  const reorderTodosAction = useCallback(async (orderedIds: number[]) => {
+    const backup = todos;
+    const idToTodo = new Map(todos.map((t) => [t.id, t]));
+    setTodos(orderedIds.map((id) => idToTodo.get(id)!).filter(Boolean));
+    try {
+      const updated = await api.reorderTodos(boardId, orderedIds);
+      setTodos(updated);
+    } catch {
+      setTodos(backup);
+      showError('Unable to reorder todos');
+    }
+  }, [boardId, todos, showError]);
+
   return (
     <TodoContext.Provider
       value={{
@@ -246,6 +260,7 @@ export function TodoProvider({ boardId, children }: Props) {
         deleteTag: deleteTagAction,
         addTagToTodo: addTagToTodoAction,
         removeTagFromTodo: removeTagFromTodoAction,
+        reorderTodos: reorderTodosAction,
       }}
     >
       {children}

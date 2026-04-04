@@ -17,7 +17,7 @@ export function TodoFooter() {
   if (todos.length === 0) return null;
 
   return (
-    <footer className="flex items-center justify-between mt-4 text-xs text-muted-foreground">
+    <footer className="flex flex-col sm:flex-row items-center justify-between mt-4 gap-2 text-xs text-muted-foreground">
       <span className="tabular-nums">
         {activeCount} item{activeCount !== 1 ? 's' : ''} left
       </span>
@@ -28,7 +28,7 @@ export function TodoFooter() {
             key={key}
             onClick={() => setFilter(key)}
             className={cn(
-              'px-2.5 py-1 rounded-md transition-colors',
+              'px-3 py-1.5 rounded-md transition-colors',
               filter === key
                 ? 'bg-secondary text-foreground'
                 : 'hover:text-foreground'

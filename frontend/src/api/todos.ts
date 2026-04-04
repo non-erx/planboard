@@ -84,3 +84,9 @@ export const removeTagFromTodo = (boardId: string, todoId: number, tagId: number
   request<Todo>(`/boards/${encodeURIComponent(boardId)}/todos/${todoId}/tags/${tagId}`, {
     method: 'DELETE',
   });
+
+export const reorderTodos = (boardId: string, order: number[]) =>
+  request<Todo[]>(`/boards/${encodeURIComponent(boardId)}/todos/reorder`, {
+    method: 'PUT',
+    body: JSON.stringify({ order }),
+  });

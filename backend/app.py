@@ -45,7 +45,7 @@ def create_app():
         board = db.session.get(Board, board_id)
         if not board:
             abort(404, description="Board not found")
-        todos = Todo.query.filter_by(board_id=board_id).order_by(Todo.id).all()
+        todos = Todo.query.filter_by(board_id=board_id).order_by(Todo.sort_order, Todo.id).all()
         return jsonify([t.to_dict() for t in todos])
 
     @app.post("/api/boards/<board_id>/todos")
@@ -59,7 +59,8 @@ def create_app():
             abort(400, description="Title is required")
         if len(title) > 500:
             abort(400, description="Title too long")
-        todo = Todo(board_id=board_id, title=title, completed=bool(data.get("completed", False)))
+        max_order = db.session.query(db.func.coalesce(db.func.max(Todo.sort_order), -1)).filter_by(board_id=board_id).scalar()
+        todo = Todo(board_id=board_id, title=title, completed=bool(data.get("completed", False)), sort_order=max_order + 1)
         db.session.add(todo)
         db.session.commit()
         return jsonify(todo.to_dict()), 201
@@ -98,7 +99,7 @@ def create_app():
             abort(404, description="Board not found")
         Todo.query.filter_by(board_id=board_id, completed=True).delete()
         db.session.commit()
-        todos = Todo.query.filter_by(board_id=board_id).order_by(Todo.id).all()
+        todos = Todo.query.filter_by(board_id=board_id).order_by(Todo.sort_order, Todo.id).all()
         return jsonify([t.to_dict() for t in todos])
 
     @app.get("/api/boards/<board_id>/tags")
@@ -183,6 +184,27 @@ def create_app():
             todo.tags.remove(tag)
             db.session.commit()
         return jsonify(todo.to_dict())
+
+    @app.put("/api/boards/<board_id>/todos/reorder")
+    def reorder_todos(board_id):
+        board = db.session.get(Board, board_id)
+        if not board:
+            abort(404, description="Board not found")
+        data = request.get_json(silent=True) or {}
+        order = data.get("order")
+        if not isinstance(order, list):
+            abort(400, description="order must be a list of todo ids")
+        todos = Todo.query.filter_by(board_id=board_id).all()
+        todo_map = {t.id: t for t in todos}
+        for idx, todo_id in enumerate(order):
+            if not isinstance(todo_id, int):
+                abort(400, description="order must contain integer ids")
+            todo = todo_map.get(todo_id)
+            if todo:
+                todo.sort_order = idx
+        db.session.commit()
+        todos = Todo.query.filter_by(board_id=board_id).order_by(Todo.sort_order, Todo.id).all()
+        return jsonify([t.to_dict() for t in todos])
 
     @app.errorhandler(400)
     def bad_request(e):
