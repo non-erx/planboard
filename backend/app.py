@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
+from sqlalchemy import inspect as sa_inspect, text
 from config import Config
 from models import db, Board, Todo, Tag, todo_tags
 
@@ -11,16 +12,13 @@ def create_app():
     db.init_app(app)
 
     with app.app_context():
+        inspector = sa_inspect(db.engine)
+        if inspector.has_table("todos"):
+            columns = [c["name"] for c in inspector.get_columns("todos")]
+            if "sort_order" not in columns:
+                with db.engine.begin() as conn:
+                    conn.execute(text("ALTER TABLE todos ADD COLUMN sort_order INTEGER NOT NULL DEFAULT 0"))
         db.create_all()
-        try:
-            with db.engine.connect() as conn:
-                result = conn.execute(db.text("PRAGMA table_info(todos)"))
-                columns = [row[1] for row in result]
-                if columns and "sort_order" not in columns:
-                    conn.execute(db.text("ALTER TABLE todos ADD COLUMN sort_order INTEGER NOT NULL DEFAULT 0"))
-                    conn.commit()
-        except Exception:
-            pass
 
     @app.post("/api/boards")
     def create_board():
